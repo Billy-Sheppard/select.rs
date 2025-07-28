@@ -1,18 +1,17 @@
 use std::{fmt, io};
 
-use html5ever::tendril::StrTendril;
 use html5ever::{serialize, QualName};
 
-use crate::document::Document;
+use crate::document::{Document, SyncStrTendril};
 use crate::predicate::Predicate;
 use crate::selection::Selection;
 
 /// The Node type specific data stored by every Node.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Data {
-    Text(StrTendril),
-    Element(QualName, Vec<(QualName, StrTendril)>),
-    Comment(StrTendril),
+    Text(SyncStrTendril),
+    Element(QualName, Vec<(QualName, SyncStrTendril)>),
+    Comment(SyncStrTendril),
 }
 
 /// Internal representation of a Node. Not of much use without a reference to a
@@ -202,7 +201,7 @@ impl<'a> Node<'a> {
 
 impl<'a> fmt::Debug for Node<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        struct Attrs<'a>(&'a [(QualName, StrTendril)]);
+        struct Attrs<'a>(&'a [(QualName, SyncStrTendril)]);
 
         impl<'a> fmt::Debug for Attrs<'a> {
             fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {

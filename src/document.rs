@@ -1,4 +1,5 @@
-use html5ever::tendril::{ByteTendril, ReadExt, StrTendril};
+use html5ever::tendril::fmt::UTF8;
+use html5ever::tendril::{Atomic, ByteTendril, ReadExt, StrTendril, Tendril};
 
 use crate::node::{self, Node};
 use crate::predicate::Predicate;
@@ -6,13 +7,13 @@ use crate::selection::Selection;
 
 use std::io;
 
+pub type SyncStrTendril = Tendril<UTF8, Atomic>;
+
 /// An HTML document.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Document {
     pub nodes: Vec<node::Raw>,
 }
-
-unsafe impl Send for Document {}
 
 impl Document {
     /// Returns a `Selection` containing nodes passing the given predicate `p`.
@@ -45,7 +46,7 @@ impl Document {
 }
 
 impl From<StrTendril> for Document {
-    /// Parses the given `StrTendril` into a `Document`.
+    /// Parses the given `SyncStrTendril` into a `Document`.
     fn from(tendril: StrTendril) -> Document {
         use html5ever::parse_document;
         use html5ever::tendril::stream::TendrilSink;
@@ -72,11 +73,12 @@ impl From<StrTendril> for Document {
                     None
                 }
                 NodeData::Text { ref contents } => {
-                    let data = node::Data::Text(contents.borrow().clone());
+                    let data =
+                        node::Data::Text(SyncStrTendril::from_slice(&contents.borrow().clone()));
                     Some(append(document, data, parent, prev))
                 }
                 NodeData::Comment { ref contents } => {
-                    let data = node::Data::Comment(contents.clone());
+                    let data = node::Data::Comment(SyncStrTendril::from_slice(&contents.clone()));
                     Some(append(document, data, parent, prev))
                 }
                 NodeData::Element {
@@ -88,7 +90,12 @@ impl From<StrTendril> for Document {
                     let attrs = attrs
                         .borrow()
                         .iter()
-                        .map(|attr| (attr.name.clone(), attr.value.clone()))
+                        .map(|attr| {
+                            (
+                                attr.name.clone(),
+                                SyncStrTendril::from_slice(&attr.value.clone()),
+                            )
+                        })
                         .collect();
                     let data = node::Data::Element(name, attrs);
                     let index = append(document, data, parent, prev);
