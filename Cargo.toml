@@ -11,8 +11,8 @@ repository = "https://github.com/utkarshkukreti/select.rs"
 
 [dependencies]
 bit-set = "0.8.0"
-html5ever = { git = "https://github.com/servo/html5ever", package = "html5ever", rev = "b93afc9484cf5de40b422a44f9cea86ab371e3ee" }
-markup5ever_rcdom = { git = "https://github.com/servo/html5ever", package = "markup5ever_rcdom", rev = "b93afc9484cf5de40b422a44f9cea86ab371e3ee" }
+html5ever = { git = "https://github.com/servo/html5ever", package = "html5ever", rev = "b93afc9484cf5de40b422a44f9cea86ab371e3ee" } # html5ever = "0.27.0"
+markup5ever_rcdom = { git = "https://github.com/servo/html5ever", package = "markup5ever_rcdom", rev = "b93afc9484cf5de40b422a44f9cea86ab371e3ee" } # markup5ever_rcdom = "0.3.0"
 
 [dev-dependencies]
 speculate = "0.1.2"
