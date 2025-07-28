@@ -33,11 +33,11 @@ pub fn main() {
             .unwrap()
             .text();
         println!(" Question: {}", question.text());
-        println!("  Answers: {}", answers);
-        println!("    Votes: {}", votes);
+        println!("  Answers: {answers}");
+        println!("    Votes: {votes}");
         println!("   Tagged: {}", tags.join(", "));
-        println!(" Asked on: {}", asked_on);
-        println!("    Asker: {}", asker);
+        println!(" Asked on: {asked_on}");
+        println!("    Asker: {asker}");
         println!(
             "Permalink: http://stackoverflow.com{}",
             question.attr("href").unwrap()
@@ -61,6 +61,6 @@ pub fn main() {
             .next()
             .unwrap()
             .text();
-        println!("{} ({})", tag, count);
+        println!("{tag} ({count})");
     }
 }

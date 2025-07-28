@@ -227,7 +227,7 @@ speculate! {
         }
 
         test "std::fmt::Debug for Node" {
-            assert_eq!(format!("{:?}", bar).replace(' ', ""), r#"Element {
+            assert_eq!(format!("{bar:?}").replace(' ', ""), r#"Element {
                 name: "bar",
                 attrs: [],
                 children: [
@@ -239,15 +239,15 @@ speculate! {
                     }
                 ]}"#.replace(['\n', ' '], ""));
 
-            assert_eq!(format!("{:?}", baz), "Text(\"baz\")");
+            assert_eq!(format!("{baz:?}"), "Text(\"baz\")");
 
-            assert_eq!(format!("{:?}", quux).replace(' ', ""), r#"Element {
+            assert_eq!(format!("{quux:?}").replace(' ', ""), r#"Element {
                 name: "quux",
                 attrs: [("class", "another-thing")],
                 children: [Comment("comment")]
             }"#.replace(['\n', ' '], ""));
 
-            assert_eq!(format!("{:?}", comment), "Comment(\"comment\")");
+            assert_eq!(format!("{comment:?}"), "Comment(\"comment\")");
         }
 
         test "Children::into_selection()" {

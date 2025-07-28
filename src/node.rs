@@ -72,8 +72,8 @@ impl<'a> Node<'a> {
         match *self.data() {
             Data::Element(_, ref attrs) => attrs
                 .iter()
-                .find(|&&(ref name_, _)| name == &name_.local)
-                .map(|&(_, ref value)| value.as_ref()),
+                .find(|&(name_, _)| name == &name_.local)
+                .map(|(_, value)| value.as_ref()),
             _ => None,
         }
     }
@@ -207,7 +207,7 @@ impl<'a> fmt::Debug for Node<'a> {
             fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
                 self.0
                     .iter()
-                    .fold(f.debug_list(), |mut f, &(ref name, ref value)| {
+                    .fold(f.debug_list(), |mut f, (name, value)| {
                         f.entry(&(&*name.local, &&**value));
                         f
                     })
@@ -245,7 +245,7 @@ impl<'a> serialize::Serialize for Node<'a> {
         match *self.data() {
             Data::Text(ref text) => serializer.write_text(text),
             Data::Element(ref name, ref attrs) => {
-                let attrs = attrs.iter().map(|&(ref name, ref value)| (name, &**value));
+                let attrs = attrs.iter().map(|(name, value)| (name, &**value));
 
                 serializer.start_elem(name.clone(), attrs)?;
 

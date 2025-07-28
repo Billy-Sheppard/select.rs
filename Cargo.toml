@@ -9,7 +9,7 @@ documentation = "https://docs.rs/select"
 homepage = "https://github.com/utkarshkukreti/select.rs"
 repository = "https://github.com/utkarshkukreti/select.rs"
 exclude = [
-    "/benches/",
+    "/benches_/",
     "/examples/",
     "/tests/",
     "/.github/",
@@ -22,3 +22,7 @@ markup5ever_rcdom = { git = "https://github.com/servo/html5ever", package = "mar
 
 [dev-dependencies]
 speculate = "0.1.2"
+
+[[bin]]
+name = "benchmarks"
+path = "nightly_benches/benches.rs"

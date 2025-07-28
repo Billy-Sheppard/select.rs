@@ -17,7 +17,7 @@ pub struct Document {
 
 impl Document {
     /// Returns a `Selection` containing nodes passing the given predicate `p`.
-    pub fn find<P: Predicate>(&self, predicate: P) -> Find<P> {
+    pub fn find<P: Predicate>(&self, predicate: P) -> Find<'_, P> {
         Find {
             document: self,
             next: 0,
@@ -27,7 +27,7 @@ impl Document {
 
     /// Returns the `n`th node of the document as a `Some(Node)`, indexed from
     /// 0, or `None` if n is greater than or equal to the number of nodes.
-    pub fn nth(&self, n: usize) -> Option<Node> {
+    pub fn nth(&self, n: usize) -> Option<Node<'_>> {
         Node::new(self, n)
     }
 
@@ -144,7 +144,7 @@ impl From<StrTendril> for Document {
     }
 }
 
-impl<'a> From<&'a str> for Document {
+impl From<&str> for Document {
     /// Parses the given `&str` into a `Document`.
     fn from(str: &str) -> Document {
         Document::from(StrTendril::from(str))

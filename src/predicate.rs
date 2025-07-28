@@ -49,7 +49,7 @@ impl Predicate for Any {
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct Name<T>(pub T);
 
-impl<'a> Predicate for Name<&'a str> {
+impl Predicate for Name<&str> {
     fn matches(&self, node: &Node) -> bool {
         node.name() == Some(self.0)
     }
@@ -59,11 +59,10 @@ impl<'a> Predicate for Name<&'a str> {
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct Class<T>(pub T);
 
-impl<'a> Predicate for Class<&'a str> {
+impl Predicate for Class<&str> {
     fn matches(&self, node: &Node) -> bool {
-        node.attr("class").map_or(false, |classes| {
-            classes.split_whitespace().any(|class| class == self.0)
-        })
+        node.attr("class")
+            .is_some_and(|classes| classes.split_whitespace().any(|class| class == self.0))
     }
 }
 
@@ -88,7 +87,7 @@ impl<'a> Predicate for Attr<&'a str, &'a str> {
     }
 }
 
-impl<'a> Predicate for Attr<&'a str, ()> {
+impl Predicate for Attr<&str, ()> {
     fn matches(&self, node: &Node) -> bool {
         node.attr(self.0).is_some()
     }

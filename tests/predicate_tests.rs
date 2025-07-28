@@ -137,7 +137,7 @@ speculate! {
             let check = |parent: &str, child: &str, matching: Option<usize>| {
                 let selector = Descendant(Class(parent), Class(child));
                 for node in &[a, b, c, d] {
-                    let expected = matching.map_or(false, |index| node.index() == index);
+                    let expected = matching.is_some_and(|index| node.index() == index);
                     assert_eq!(selector.matches(node), expected);
                 }
             };
